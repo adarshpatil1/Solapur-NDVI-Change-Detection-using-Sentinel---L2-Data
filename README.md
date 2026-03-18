@@ -19,9 +19,9 @@ What this Project is all about?
 
 Code:
 
-- dec_2025.py                     Computes the NDVI for 31 dec 2025 & Plots the essential graphs.
-- march_2026.py                   Computes the NDVI for 16 March 2026 & Plots the essential graphs.
-- change_detection.py             Computes NDVI Change and Plots it.
+- dec_2025.py                     - Computes the NDVI for 31 dec 2025 & Plots the essential graphs.
+- march_2026.py                   - Computes the NDVI for 16 March 2026 & Plots the essential graphs.
+- change_detection.py             - Computes NDVI Change and Plots it.
 
 Outputs: 
 
