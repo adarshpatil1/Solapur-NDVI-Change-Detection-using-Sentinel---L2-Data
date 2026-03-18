@@ -34,6 +34,7 @@ Outputs:
 - ndvi_histogram_31dec2025.png          - NDVI Value x Pixel Histogram for December
 - spectral_signatures_16march2026.png   - Land Types- Water, Soil, Urban, Vegetation for B04 and B08 vs their Surface Reflectance for March 
 - spectral_signatures_31dec2025.png      - Land Types- Water, Soil, Urban, Vegetation for B04 and B08 vs their Surface Reflectance for December
+- ndvi_threshold_classified.png          - Threshold Classified Graph of NDVI change.
 
 ## How to Run 
 
@@ -48,7 +49,11 @@ Outputs:
 
 ## Results/ Conclusion
 
-Verified the NDVI Decrease from December to March ( The Typical Rabi Crop Cycle).
-You can check outputs.
-Observed the tile on QGIS to cross-verify the findings.
+- Verified the NDVI Decrease from December to March ( The Typical Rabi Crop Cycle).
+- You can check outputs folder for all the Graphs 
+- Observed the tile on QGIS to cross-verify the findings.
+- Threshold classfication confirms the findings -
+  Green — vegetation gain (ΔNDVI > 0.2) — scattered, small patches
+  Yellow — no significant change (−0.2 to +0.2) — majority of the tile
+  Red — vegetation loss (ΔNDVI < −0.2) — the large patch around row 6000 which is exactly where the dense December vegetation was
 
