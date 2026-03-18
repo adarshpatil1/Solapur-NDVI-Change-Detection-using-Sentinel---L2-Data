@@ -58,15 +58,15 @@ assert dataset1_dec.shape == dataset1_march.shape
 assert dataset1_dec.transform == dataset1_march.transform
 print("Spatial alignment confirmed.")
 
-# print(np.nanmin(ndvi_change), np.nanmax(ndvi_change), np.nanmean(ndvi_change))
-# print(np.isnan(ndvi_change).sum())
+print(np.nanmin(ndvi_change), np.nanmax(ndvi_change), np.nanmean(ndvi_change))
+print(np.isnan(ndvi_change).sum())
 
 
-# plt.imshow(ndvi_change, cmap = "coolwarm")
-# plt.colorbar()
-# plt.title("NDVI Change Detection - Solapur - 31 Dec 2025 to 16 March 2026")
-# plt.savefig("ndvi_change_detection.png")
-# plt.clf()
+plt.imshow(ndvi_change, cmap = "coolwarm")
+plt.colorbar()
+plt.title("NDVI Change Detection - Solapur - 31 Dec 2025 to 16 March 2026")
+plt.savefig("ndvi_change_detection.png")
+plt.clf()
 
 # Threshold Classification
 
