@@ -68,3 +68,16 @@ print("Spatial alignment confirmed.")
 # plt.savefig("ndvi_change_detection.png")
 # plt.clf()
 
+# Threshold Classification
+
+ndvi_classified = np.zeros_like(ndvi_change)
+
+ndvi_classified[ndvi_change < -0.2] = -1
+ndvi_classified[ndvi_change >  0.2] = 1
+ndvi_classified[np.isnan(ndvi_change)] = np.nan
+
+plt.imshow(ndvi_classified, cmap = "RdYlGn")
+plt.title("NDVI Threshold Classification - Solapur - Dec 2025 & March 2026")
+plt.colorbar()
+plt.savefig("ndvi_threshold_classified.png")
+plt.clf()
