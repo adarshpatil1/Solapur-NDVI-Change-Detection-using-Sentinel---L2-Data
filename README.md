@@ -2,12 +2,12 @@
 
 What this Project is all about?
 
--It processes the Sentinel 2 raster data data for 31 Dec 2025 and 16 March 2026 of same tile(T43QEV) of Solapur District using Rasterio python library. 
--Computes NDVI, surface reflectance of both timelines.
--Computes the Spectral Signatures.
--Plots the essential graphs (NDVI, Band histogram, NDVI Histogram, Spectral Signatures) for both dates using Matplotlib
--Calculates the NDVI Change from Dec to March.
--Plot the graph of NDVI Change using Matplotlib.
+- It processes the Sentinel 2 raster data data for 31 Dec 2025 and 16 March 2026 of same tile(T43QEV) of Solapur District using Rasterio python library. 
+- Computes NDVI, surface reflectance of both timelines.
+- Computes the Spectral Signatures.
+- Plots the essential graphs (NDVI, Band histogram, NDVI Histogram, Spectral Signatures) for both dates using Matplotlib
+- Calculates the NDVI Change from Dec to March.
+- Plot the graph of NDVI Change using Matplotlib.
  
 
 ## What this Data Includes?
