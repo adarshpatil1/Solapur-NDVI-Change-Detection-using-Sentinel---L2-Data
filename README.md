@@ -25,15 +25,15 @@ Code:
 
 Outputs: 
 
-- histogram_16march2026.png             Compares the surface reflectance for both bands ( B04 and B08 )  for March Data
-- histogram_31dec2025.png               Compares the surface reflectance for both bands ( B04 and B08 )  for December Data
-- ndvi_16march2026.png                  NDVI Graph over tile for March 
-- ndvi_dec2025.png                      NDVI Graph over tile for December
-- ndvi_change_detection.png             NDVI Change detection graph showing blue is reduced NDVI and when you go towards RED which means increased NDVI
-- ndvi_histogram_16march2026.png        NDVI Value x Pixel Histogram for March
-- ndvi_histogram_31dec2025.png          NDVI Value x Pixel Histogram for December
-- spectral_signatures_16march2026.png   Land Types- Water, Soil, Urban, Vegetation for B04 and B08 vs their Surface Reflectance for March 
-- spectral_signatures_31dec2025.png      Land Types- Water, Soil, Urban, Vegetation for B04 and B08 vs their Surface Reflectance for December
+- histogram_16march2026.png            - Compares the surface reflectance for both bands ( B04 and B08 )  for March Data
+- histogram_31dec2025.png              - Compares the surface reflectance for both bands ( B04 and B08 )  for December Data
+- ndvi_16march2026.png                 - NDVI Graph over tile for March 
+- ndvi_dec2025.png                     - NDVI Graph over tile for December
+- ndvi_change_detection.png            - NDVI Change detection graph showing blue is reduced NDVI and when you go towards RED which means increased NDVI
+- ndvi_histogram_16march2026.png        - NDVI Value x Pixel Histogram for March
+- ndvi_histogram_31dec2025.png          - NDVI Value x Pixel Histogram for December
+- spectral_signatures_16march2026.png   - Land Types- Water, Soil, Urban, Vegetation for B04 and B08 vs their Surface Reflectance for March 
+- spectral_signatures_31dec2025.png      - Land Types- Water, Soil, Urban, Vegetation for B04 and B08 vs their Surface Reflectance for December
 
 ## How to Run 
 
