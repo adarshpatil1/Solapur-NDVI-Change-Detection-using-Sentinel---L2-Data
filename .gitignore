@@ -1,4 +1,5 @@
-*.SAFE/
 venv/
 __pycache__/
 *.pyc
+*.tif
+*.pgw
