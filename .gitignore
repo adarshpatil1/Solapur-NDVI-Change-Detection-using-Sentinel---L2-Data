@@ -1,5 +1,24 @@
+<<<<<<< HEAD
 venv/
 __pycache__/
 *.pyc
 *.tif
 *.pgw
+=======
+# Sentinel-2 data
+*.SAFE/
+*.jp2
+
+# GeoTIFF outputs
+*.tif
+*.tiff
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# VS Code
+.vscode/
+>>>>>>> a43405f (Project Refined)

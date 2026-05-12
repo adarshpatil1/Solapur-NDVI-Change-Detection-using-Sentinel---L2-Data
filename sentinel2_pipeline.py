@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Sentinel-2 L2A NDVI Change Detection Pipeline
 Solapur District, Maharashtra — Tile T43QEV
@@ -20,16 +21,22 @@ Outputs (saved to ./outputs/):
     ndvi_threshold_classified.png
 """
 
+=======
+>>>>>>> a43405f (Project Refined)
 import os
 import rasterio
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
+<<<<<<< HEAD
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 # Edit these two paths to point at your local .SAFE folders.
 # Everything else runs automatically.
 
+=======
+# ── CONFIG — update these paths to your local .SAFE folders ──────────────────
+>>>>>>> a43405f (Project Refined)
 SAFE_DEC = (
     r"C:\Users\ashis\Downloads"
     r"\S2C_MSIL2A_20251231T052231_N0511_R062_T43QEV_20251231T083411.SAFE"
@@ -39,14 +46,20 @@ SAFE_MARCH = (
     r"\S2B_MSIL2A_20260316T051649_N0512_R062_T43QEV_20260316T091005.SAFE"
 )
 
+<<<<<<< HEAD
 # Tile ID — used to build band file paths inside the .SAFE structure
+=======
+>>>>>>> a43405f (Project Refined)
 TILE_ID_DEC   = "T43QEV_20251231T052231"
 TILE_ID_MARCH = "T43QEV_20260316T051649"
 GRANULE_DEC   = "L2A_T43QEV_A006896_20251231T053319"
 GRANULE_MARCH = "L2A_T43QEV_A047135_20260316T052630"
 
+<<<<<<< HEAD
 # Georeferenced sample points (UTM easting, northing) for spectral signatures.
 # These are fixed for tile T43QEV — no need to change.
+=======
+>>>>>>> a43405f (Project Refined)
 SAMPLE_POINTS = {
     "Water":      (596315, 1959919),
     "Urban":      (597336, 1952676),
@@ -58,14 +71,19 @@ OUTPUT_DIR = "outputs"
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+<<<<<<< HEAD
 def band_path(safe_dir: str, granule: str, tile_id: str, band: str) -> str:
     """Build the full path to a 10m band JP2 file inside a .SAFE folder."""
+=======
+def band_path(safe_dir, granule, tile_id, band):
+>>>>>>> a43405f (Project Refined)
     return os.path.join(
         safe_dir, "GRANULE", granule, "IMG_DATA", "R10m",
         f"{tile_id}_{band}_10m.jp2"
     )
 
 
+<<<<<<< HEAD
 def load_band(path: str) -> tuple[np.ndarray, rasterio.DatasetReader]:
     """
     Open a Sentinel-2 L2A band JP2, apply BOA reflectance correction,
@@ -81,15 +99,26 @@ def load_band(path: str) -> tuple[np.ndarray, rasterio.DatasetReader]:
     corrected = (raw - 1000) / 10000
 
     # Mask out-of-range values (clouds, saturated pixels, fill)
+=======
+def load_band(path):
+    ds = rasterio.open(path)
+    raw = ds.read(1).astype(float)
+    # BOA reflectance correction: offset=-1000, quantification=10000
+    corrected = (raw - 1000) / 10000
+>>>>>>> a43405f (Project Refined)
     corrected[(corrected > 1.0) | (corrected <= 0)] = np.nan
     return corrected, ds
 
 
+<<<<<<< HEAD
 def compute_ndvi(b04: np.ndarray, b08: np.ndarray) -> np.ndarray:
     """
     Compute NDVI = (NIR - Red) / (NIR + Red).
     Division-by-zero and out-of-range values are set to NaN.
     """
+=======
+def compute_ndvi(b04, b08):
+>>>>>>> a43405f (Project Refined)
     with np.errstate(divide="ignore", invalid="ignore"):
         ndvi = (b08 - b04) / (b08 + b04)
     ndvi[~np.isfinite(ndvi)] = np.nan
@@ -97,7 +126,30 @@ def compute_ndvi(b04: np.ndarray, b08: np.ndarray) -> np.ndarray:
     return ndvi
 
 
+<<<<<<< HEAD
 def plot_ndvi_map(ndvi: np.ndarray, date_label: str, out_path: str) -> None:
+=======
+def extract_spectral_signatures(b04, b08, ds):
+    results = {}
+    for label, (east, north) in SAMPLE_POINTS.items():
+        row, col = ds.index(east, north)
+        r, n = float(b04[row, col]), float(b08[row, col])
+        ndvi_val = (n - r) / (n + r) if (n + r) else np.nan
+        results[label] = {"b04": r, "b08": n, "ndvi": ndvi_val}
+        print(f"    {label:12s}  B04={r:.4f}  B08={n:.4f}  NDVI={ndvi_val:.4f}")
+    return results
+
+
+def save_geotiff(array, ref_ds, out_path):
+    profile = ref_ds.profile.copy()
+    profile.update(driver="GTiff", dtype=rasterio.float32, count=1, compress="lzw")
+    with rasterio.open(out_path, "w", **profile) as dst:
+        dst.write(array.astype(rasterio.float32), 1)
+    print(f"  Saved GeoTIFF: {out_path}")
+
+
+def plot_ndvi_map(ndvi, date_label, out_path):
+>>>>>>> a43405f (Project Refined)
     plt.figure(figsize=(8, 7))
     plt.imshow(ndvi, cmap="RdYlGn", vmin=-1, vmax=1)
     plt.colorbar(label="NDVI")
@@ -105,11 +157,15 @@ def plot_ndvi_map(ndvi: np.ndarray, date_label: str, out_path: str) -> None:
     plt.axis("off")
     plt.tight_layout()
     plt.savefig(out_path, dpi=150)
+<<<<<<< HEAD
     plt.clf()
+=======
+>>>>>>> a43405f (Project Refined)
     plt.close()
     print(f"  Saved: {out_path}")
 
 
+<<<<<<< HEAD
 def plot_band_histogram(
     b04: np.ndarray, b08: np.ndarray, date_label: str, out_path: str
 ) -> None:
@@ -118,31 +174,50 @@ def plot_band_histogram(
             alpha=0.65, label="B04 Red")
     ax.hist(b08[~np.isnan(b08)].ravel(), bins=100, color="darkred",
             alpha=0.65, label="B08 NIR")
+=======
+def plot_band_histogram(b04, b08, date_label, out_path):
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.hist(b04[~np.isnan(b04)].ravel(), bins=100, color="tomato", alpha=0.65, label="B04 Red")
+    ax.hist(b08[~np.isnan(b08)].ravel(), bins=100, color="darkred", alpha=0.65, label="B08 NIR")
+>>>>>>> a43405f (Project Refined)
     ax.set_title(f"Band Reflectance Distribution — Solapur — {date_label}")
     ax.set_xlabel("Surface Reflectance")
     ax.set_ylabel("Pixel Count")
     ax.legend()
     plt.tight_layout()
     plt.savefig(out_path, dpi=150)
+<<<<<<< HEAD
     plt.clf()
+=======
+>>>>>>> a43405f (Project Refined)
     plt.close()
     print(f"  Saved: {out_path}")
 
 
+<<<<<<< HEAD
 def plot_ndvi_histogram(ndvi: np.ndarray, date_label: str, out_path: str) -> None:
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.hist(ndvi[~np.isnan(ndvi)].ravel(), bins=200, color="forestgreen",
             edgecolor="none")
+=======
+def plot_ndvi_histogram(ndvi, date_label, out_path):
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.hist(ndvi[~np.isnan(ndvi)].ravel(), bins=200, color="forestgreen", edgecolor="none")
+>>>>>>> a43405f (Project Refined)
     ax.set_title(f"NDVI Distribution — Solapur — {date_label}")
     ax.set_xlabel("NDVI Value")
     ax.set_ylabel("Pixel Count")
     plt.tight_layout()
     plt.savefig(out_path, dpi=150)
+<<<<<<< HEAD
     plt.clf()
+=======
+>>>>>>> a43405f (Project Refined)
     plt.close()
     print(f"  Saved: {out_path}")
 
 
+<<<<<<< HEAD
 def extract_spectral_signatures(
     b04: np.ndarray,
     b08: np.ndarray,
@@ -174,6 +249,14 @@ def plot_spectral_signatures(
     x = np.arange(len(labels))
     width = 0.30
 
+=======
+def plot_spectral_signatures(signatures, date_label, out_path):
+    labels = list(signatures.keys())
+    b04_vals = [signatures[l]["b04"] for l in labels]
+    b08_vals = [signatures[l]["b08"] for l in labels]
+    x = np.arange(len(labels))
+    width = 0.30
+>>>>>>> a43405f (Project Refined)
     fig, ax = plt.subplots(layout="constrained", figsize=(8, 5))
     ax.bar(x - width / 2, b04_vals, width, label="B04 Red", color="tomato")
     ax.bar(x + width / 2, b08_vals, width, label="B08 NIR", color="steelblue")
@@ -183,12 +266,19 @@ def plot_spectral_signatures(
     ax.set_title(f"Spectral Signatures — Solapur — {date_label}")
     ax.legend()
     plt.savefig(out_path, dpi=150)
+<<<<<<< HEAD
     plt.clf()
+=======
+>>>>>>> a43405f (Project Refined)
     plt.close()
     print(f"  Saved: {out_path}")
 
 
+<<<<<<< HEAD
 def plot_ndvi_change(ndvi_change: np.ndarray, out_path: str) -> None:
+=======
+def plot_ndvi_change(ndvi_change, out_path):
+>>>>>>> a43405f (Project Refined)
     plt.figure(figsize=(8, 7))
     plt.imshow(ndvi_change, cmap="coolwarm", vmin=-0.5, vmax=0.5)
     plt.colorbar(label="ΔNDVI (March − December)")
@@ -196,11 +286,15 @@ def plot_ndvi_change(ndvi_change: np.ndarray, out_path: str) -> None:
     plt.axis("off")
     plt.tight_layout()
     plt.savefig(out_path, dpi=150)
+<<<<<<< HEAD
     plt.clf()
+=======
+>>>>>>> a43405f (Project Refined)
     plt.close()
     print(f"  Saved: {out_path}")
 
 
+<<<<<<< HEAD
 def plot_threshold_classification(ndvi_change: np.ndarray, out_path: str) -> np.ndarray:
     """
     Classify ΔNDVI into three classes:
@@ -208,19 +302,27 @@ def plot_threshold_classification(ndvi_change: np.ndarray, out_path: str) -> np.
        0 : no change        (-0.2 ≤ ΔNDVI ≤ 0.2)
       +1 : vegetation gain  (ΔNDVI > 0.2)
     """
+=======
+def plot_threshold_classification(ndvi_change, out_path):
+>>>>>>> a43405f (Project Refined)
     classified = np.zeros_like(ndvi_change)
     classified[ndvi_change < -0.2] = -1
     classified[ndvi_change >  0.2] =  1
     classified[np.isnan(ndvi_change)] = np.nan
 
     cmap = mcolors.ListedColormap(["#d73027", "#ffffbf", "#1a9850"])
+<<<<<<< HEAD
     bounds = [-1.5, -0.5, 0.5, 1.5]
     norm = mcolors.BoundaryNorm(bounds, cmap.N)
+=======
+    norm = mcolors.BoundaryNorm([-1.5, -0.5, 0.5, 1.5], cmap.N)
+>>>>>>> a43405f (Project Refined)
 
     fig, ax = plt.subplots(figsize=(8, 7))
     img = ax.imshow(classified, cmap=cmap, norm=norm)
     cbar = fig.colorbar(img, ax=ax, ticks=[-1, 0, 1])
     cbar.ax.set_yticklabels(["Vegetation loss", "No change", "Vegetation gain"])
+<<<<<<< HEAD
     ax.set_title(
         "NDVI Threshold Classification — Solapur\n31 Dec 2025 → 16 Mar 2026\n"
         "Threshold: |ΔNDVI| > 0.2"
@@ -248,10 +350,21 @@ def save_geotiff(array: np.ndarray, ref_ds: rasterio.DatasetReader, out_path: st
         dst.write(array.astype(rasterio.float32), 1)
     print(f"  Saved: {out_path}")
 # ── MAIN ─────────────────────────────────────────────────────────────────────
+=======
+    ax.set_title("NDVI Threshold Classification — Solapur\n31 Dec 2025 → 16 Mar 2026")
+    ax.axis("off")
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"  Saved: {out_path}")
+    return classified
+
+>>>>>>> a43405f (Project Refined)
 
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+<<<<<<< HEAD
     # ── December 2025 ────────────────────────────────────────────────────────
     print("\n[1/3] Processing December 2025...")
     b04_dec, ds_dec = load_band(band_path(SAFE_DEC, GRANULE_DEC, TILE_ID_DEC, "B04"))
@@ -320,6 +433,49 @@ def main():
                                   os.path.join(OUTPUT_DIR, "ndvi_threshold_classified.png"))
     save_geotiff(ndvi_change, ds_dec, os.path.join(OUTPUT_DIR, "ndvi_change.tif"))
     save_geotiff(classified,  ds_dec, os.path.join(OUTPUT_DIR, "ndvi_classified.tif"))
+=======
+    print("\n[1/3] December 2025")
+    b04_dec, ds_dec = load_band(band_path(SAFE_DEC, GRANULE_DEC, TILE_ID_DEC, "B04"))
+    b08_dec, _      = load_band(band_path(SAFE_DEC, GRANULE_DEC, TILE_ID_DEC, "B08"))
+    ndvi_dec = compute_ndvi(b04_dec, b08_dec)
+    print(f"  NDVI: min={np.nanmin(ndvi_dec):.3f}  max={np.nanmax(ndvi_dec):.3f}  mean={np.nanmean(ndvi_dec):.3f}")
+
+    plot_ndvi_map(ndvi_dec, "31 Dec 2025", os.path.join(OUTPUT_DIR, "ndvi_dec2025.png"))
+    plot_band_histogram(b04_dec, b08_dec, "31 Dec 2025", os.path.join(OUTPUT_DIR, "histogram_31dec2025.png"))
+    plot_ndvi_histogram(ndvi_dec, "31 Dec 2025", os.path.join(OUTPUT_DIR, "ndvi_histogram_31dec2025.png"))
+    print("  Spectral signatures:")
+    sigs_dec = extract_spectral_signatures(b04_dec, b08_dec, ds_dec)
+    plot_spectral_signatures(sigs_dec, "31 Dec 2025", os.path.join(OUTPUT_DIR, "spectral_signatures_31dec2025.png"))
+
+    print("\n[2/3] March 2026")
+    b04_mar, ds_mar = load_band(band_path(SAFE_MARCH, GRANULE_MARCH, TILE_ID_MARCH, "B04"))
+    b08_mar, _      = load_band(band_path(SAFE_MARCH, GRANULE_MARCH, TILE_ID_MARCH, "B08"))
+    ndvi_mar = compute_ndvi(b04_mar, b08_mar)
+    print(f"  NDVI: min={np.nanmin(ndvi_mar):.3f}  max={np.nanmax(ndvi_mar):.3f}  mean={np.nanmean(ndvi_mar):.3f}")
+
+    plot_ndvi_map(ndvi_mar, "16 Mar 2026", os.path.join(OUTPUT_DIR, "ndvi_march2026.png"))
+    plot_band_histogram(b04_mar, b08_mar, "16 Mar 2026", os.path.join(OUTPUT_DIR, "histogram_16march2026.png"))
+    plot_ndvi_histogram(ndvi_mar, "16 Mar 2026", os.path.join(OUTPUT_DIR, "ndvi_histogram_16march2026.png"))
+    print("  Spectral signatures:")
+    sigs_mar = extract_spectral_signatures(b04_mar, b08_mar, ds_mar)
+    plot_spectral_signatures(sigs_mar, "16 Mar 2026", os.path.join(OUTPUT_DIR, "spectral_signatures_16march2026.png"))
+
+    print("\n[3/3] Change Detection")
+    assert ds_dec.shape == ds_mar.shape and ds_dec.transform == ds_mar.transform, \
+        "Spatial alignment check failed"
+    print("  Spatial alignment confirmed.")
+
+    ndvi_change = ndvi_mar - ndvi_dec
+    loss_pct = (ndvi_change < -0.2).sum() / np.isfinite(ndvi_change).sum() * 100
+    gain_pct = (ndvi_change >  0.2).sum() / np.isfinite(ndvi_change).sum() * 100
+    print(f"  ΔNDVI mean={np.nanmean(ndvi_change):.3f}  loss={loss_pct:.1f}%  gain={gain_pct:.1f}%")
+
+    plot_ndvi_change(ndvi_change, os.path.join(OUTPUT_DIR, "ndvi_change_detection.png"))
+    classified = plot_threshold_classification(ndvi_change, os.path.join(OUTPUT_DIR, "ndvi_threshold_classified.png"))
+    save_geotiff(ndvi_change, ds_dec, os.path.join(OUTPUT_DIR, "ndvi_change.tif"))
+    save_geotiff(classified,  ds_dec, os.path.join(OUTPUT_DIR, "ndvi_classified.tif"))
+
+>>>>>>> a43405f (Project Refined)
     ds_dec.close()
     ds_mar.close()
     print("\nDone. All outputs saved to ./outputs/")
